@@ -14,8 +14,6 @@ def YouTube_downloader(url, audio_only=False, file_extension="mp4"):
         secs = yt.length % 60
         minutes = (yt.length - secs) / 60
 
-        messagebox.showinfo("Video", f"Title: {yt.title}\nViews: {yt.views}\nLength {minutes}:{secs}")
-
         if audio_only:
             yt.streams.get_audio_only().download(filename='youtube_video.mp3')
             messagebox.showinfo('Video Downloader', 'Done!')
@@ -38,6 +36,19 @@ def YouTube_process(url, audio_only=False, file_extension="mp4"):
     p = multiprocessing.Process(target=YouTube_downloader, args=(url, audio_only, file_extension,))
 
     p.start()
+
+
+def show_info(url):
+    try:
+        yt = YouTube(url)
+
+        secs = yt.length % 60
+        minutes = (yt.length - secs) / 60
+
+        messagebox.showinfo("Video", f"Title: {yt.title}\nBy: {yt.author}\nViews: {yt.views}\nLength {minutes}:{secs}")
+
+    except pytube.exceptions.RegexMatchError:
+        messagebox.showerror('Error', 'Enter valid url')
 
 
 def main():
@@ -68,8 +79,12 @@ def main():
 
     Button(window, text='Download!', command=lambda: YouTube_process(URL.get(), audio.get(), combo.get())).place(
         width=100,
-        height=30, x=200,
+        height=30, x=150,
         y=60)
+
+    Button(window, text="Show info", command=lambda: show_info(URL.get())).place(width=100, height=30, x=250, y=60)
+
+    Label(window, text="Info: ", font=35).place(x=225, y=300)
 
     window.mainloop()
 
