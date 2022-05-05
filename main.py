@@ -26,7 +26,7 @@ def YouTube_downloader(url, audio_only=False, file_extension="mp4"):
         else:
             try:
 
-                yt.streams.filter(file_extension=file_extension, only_audio=False).first().download()
+                yt.streams.filter(file_extension=file_extension, only_video=True).first().download()
 
             except AttributeError:
                 messagebox.showerror('Error', 'Enter valid file extension')
@@ -58,7 +58,7 @@ def Playlist_downloader(url, audio_only=False, file_extension="mp4"):
             else:
                 try:
 
-                    video.streams.filter(file_extension=file_extension, only_audio=False).first().download(
+                    video.streams.filter(file_extension=file_extension, only_video=True).first().download(
                         output_path=f'{p.title}/')
 
                 except AttributeError:
