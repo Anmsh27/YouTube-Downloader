@@ -7,6 +7,9 @@ import pytube.exceptions
 from pytube import YouTube, Playlist
 
 
+class PrivatePlaylistError(Exception):
+    pass
+
 
 def YouTube_process(url, audio_only=False, file_extension="mp4"):
     p = multiprocessing.Process(target=YouTube_downloader, args=(url, audio_only, file_extension,))
@@ -44,6 +47,9 @@ def YouTube_downloader(url, audio_only=False, file_extension="mp4"):
 def Playlist_downloader(url, audio_only=False, file_extension="mp4"):
     try:
 
+        if distinguisher(url) == "private":
+            raise PrivatePlaylistError
+
         p = Playlist(url)
 
         try:
@@ -73,6 +79,9 @@ def Playlist_downloader(url, audio_only=False, file_extension="mp4"):
     except pytube.exceptions.PytubeError as e:
         messagebox.showerror('Error', str(e))
 
+    except PrivatePlaylistError:
+        messagebox.showerror('Error', 'Playlist is private')
+
     except KeyError:
         messagebox.showerror('Error', 'Enter valid url')
 
@@ -84,8 +93,10 @@ def Playlist_process(url, audio_only=False, file_extension="mp4"):
 
 
 def distinguisher(url):
-    if "&list=" or "playlist" in url:
+    if "&list=" in url:
         return "playlist"
+    elif "playlist" in url:
+        return "private"
     else:
         return "video"
 
@@ -102,6 +113,9 @@ def show_info(url):
                                 f"Title: {yt.title}\nBy: {yt.author}\nViews: {yt.views}\nLength {minutes}:{secs}")
         else:
 
+            if distinguisher(url) == "private":
+                raise PrivatePlaylistError
+
             p = Playlist(url)
 
             messagebox.showinfo("Playlist",
@@ -110,12 +124,14 @@ def show_info(url):
     except pytube.exceptions.RegexMatchError:
         messagebox.showerror('Error', 'Enter valid url')
 
+    except PrivatePlaylistError:
+        messagebox.showerror('Error', 'Playlist is private')
+
     except KeyError:
         messagebox.showerror('Error', 'Enter valid url')
 
 
 def download(url, audio_only=False, file_extension="mp4"):
-
     if distinguisher(url) == "playlist":
 
         Playlist_process(url, audio_only, file_extension)
