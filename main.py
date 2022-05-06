@@ -7,6 +7,7 @@ import pytube.exceptions
 from pytube import YouTube, Playlist
 
 
+
 def YouTube_process(url, audio_only=False, file_extension="mp4"):
     p = multiprocessing.Process(target=YouTube_downloader, args=(url, audio_only, file_extension,))
 
@@ -72,6 +73,9 @@ def Playlist_downloader(url, audio_only=False, file_extension="mp4"):
     except pytube.exceptions.PytubeError as e:
         messagebox.showerror('Error', str(e))
 
+    except KeyError:
+        messagebox.showerror('Error', 'Enter valid url')
+
 
 def Playlist_process(url, audio_only=False, file_extension="mp4"):
     p = multiprocessing.Process(target=Playlist_downloader, args=(url, audio_only, file_extension,))
@@ -97,12 +101,16 @@ def show_info(url):
             messagebox.showinfo("Video",
                                 f"Title: {yt.title}\nBy: {yt.author}\nViews: {yt.views}\nLength {minutes}:{secs}")
         else:
+
             p = Playlist(url)
 
             messagebox.showinfo("Playlist",
                                 f"Title: {p.title}\nOwner: {p.owner}\nViews: {p.views}\nLength: {p.length}")
 
     except pytube.exceptions.RegexMatchError:
+        messagebox.showerror('Error', 'Enter valid url')
+
+    except KeyError:
         messagebox.showerror('Error', 'Enter valid url')
 
 
