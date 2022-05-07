@@ -148,32 +148,35 @@ def main():
     audio = BooleanVar()
     audio.set(False)
 
-    Label(window, text="Options:", font=25).place(x=210, y=100)
+    Label(window, text="----------------------------------------------------------------------------", font=25).place(x=0, y=220)
+
+    Label(window, text="Options:", font=25).place(
+        x=210, y=240)
 
     audio_box = Checkbutton(window, text="Only audio", font=1, var=audio)
 
-    audio_box.place(x=0, y=125)
+    audio_box.place(x=0, y=280)
 
-    Label(window, text="File extension:", font=1).place(x=0, y=185)
+    Label(window, text="File extension:", font=1).place(x=0, y=325)
 
     combo = ttk.Combobox(window)
     combo['values'] = ("mp4", "webm", "3gpp")
     combo.current(0)
-    combo.place(x=0, y=220)
+    combo.place(x=0, y=360)
 
-    Label(window, text="Enter URL of YouTube video", font=15).place(width=500, height=30, x=0, y=0)
+    Label(window, text="Enter URL of YouTube video", font=1).place(width=500, height=30, x=0, y=70)
 
     URL = Entry(window)
 
-    URL.place(width=500, height=30, x=0, y=30)
+    URL.place(width=250, height=30, x=125, y=100)
 
     Button(window, text='Download!',
            command=lambda: download(URL.get(), audio.get(), combo.get())).place(
         width=100,
         height=30, x=150,
-        y=60)
+        y=140)
 
-    Button(window, text="Show info", command=lambda: show_info(URL.get())).place(width=100, height=30, x=250, y=60)
+    Button(window, text="Show info", command=lambda: show_info(URL.get())).place(width=100, height=30, x=250, y=140)
 
     window.mainloop()
 
