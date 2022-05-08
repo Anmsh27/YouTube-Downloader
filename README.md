@@ -20,3 +20,5 @@ If you are getting some error like this
 `
 
 then refer to [this Github issue](https://github.com/pytube/pytube/issues/1293).
+
+Also keep the main pytube window open or command line open to see if the video is done
