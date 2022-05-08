@@ -22,18 +22,28 @@ def YouTube_downloader(url, audio_only=False, file_extension="mp4"):
 
         yt = YouTube(url)
 
+        vid_title = ""
+        for word in yt.title.split(" "):
+            vid_title = vid_title + word
+
         if audio_only:
             yt.streams.get_audio_only().download(filename='youtube_video.mp3')
 
+            print("Done")
+
             messagebox.showinfo('Video Downloader', 'Done!')
+
 
         else:
             try:
 
-                yt.streams.filter(file_extension=file_extension, only_video=True).first().download()
+                yt.streams.filter(file_extension=file_extension, only_audio=False).first().download(
+                    filename=vid_title + "." + file_extension)
 
             except AttributeError:
                 messagebox.showerror('Error', 'Enter valid file extension')
+
+            print("Done")
 
             messagebox.showinfo('Video Downloader', 'Done!')
 
@@ -59,17 +69,24 @@ def Playlist_downloader(url, audio_only=False, file_extension="mp4"):
 
         for video in p.videos:
 
+            vid_title = ""
+            for word in p.title.split(" "):
+                vid_title = vid_title + word
+
             if audio_only:
-                video.streams.get_audio_only().download(output_path=f'{p.title}/')
+                video.streams.get_audio_only().download(output_path=f'{p.title}/',
+                                                        filename=vid_title + "." + file_extension)
 
             else:
                 try:
 
-                    video.streams.filter(file_extension=file_extension, only_video=True).first().download(
-                        output_path=f'{p.title}/')
+                    video.streams.filter(file_extension=file_extension, only_audio=False).first().download(
+                        output_path=f'{p.title}/', filename=vid_title + "." + file_extension)
 
                 except AttributeError:
                     messagebox.showerror('Error', 'Enter valid file extension')
+
+        print("Done")
 
         messagebox.showinfo('Video Downloader', 'Done!')
 
@@ -148,7 +165,8 @@ def main():
     audio = BooleanVar()
     audio.set(False)
 
-    Label(window, text="----------------------------------------------------------------------------", font=25).place(x=0, y=220)
+    Label(window, text="----------------------------------------------------------------------------", font=25).place(
+        x=0, y=220)
 
     Label(window, text="Options:", font=25).place(
         x=210, y=240)
