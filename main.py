@@ -11,13 +11,13 @@ class PrivatePlaylistError(Exception):
     pass
 
 
-def YouTube_process(url, audio_only=False, file_extension="mp4"):
-    p = multiprocessing.Process(target=YouTube_downloader, args=(url, audio_only, file_extension,))
+def YouTube_process(url, audio_only=False, file_extension="mp4", filename=None):
+    p = multiprocessing.Process(target=YouTube_downloader, args=(url, audio_only, file_extension, filename,))
 
     p.start()
 
 
-def YouTube_downloader(url, audio_only=False, file_extension="mp4"):
+def YouTube_downloader(url, audio_only=False, file_extension="mp4", filename=None):
     try:
 
         yt = YouTube(url)
@@ -26,8 +26,13 @@ def YouTube_downloader(url, audio_only=False, file_extension="mp4"):
         for word in yt.title.split(" "):
             vid_title = vid_title + word
 
+        filename_final = ""
+        if filename:
+            for word in filename.split(" "):
+                filename_final = filename_final + word
+
         if audio_only:
-            yt.streams.get_audio_only().download(filename='youtube_video.mp3')
+            yt.streams.get_audio_only().download(filename=f'{filename_final}.mp3' if filename else 'youtube_video.mp3')
 
             print("Done")
 
@@ -37,8 +42,8 @@ def YouTube_downloader(url, audio_only=False, file_extension="mp4"):
         else:
             try:
 
-                yt.streams.filter(file_extension=file_extension, only_audio=False).first().download(
-                    filename=vid_title + "." + file_extension)
+                yt.streams.filter(file_extension=file_extension, only_audio=False).get_highest_resolution().download(
+                    filename=f'{filename_final}.{file_extension}' if filename else f'{vid_title}.{file_extension}')
 
             except AttributeError:
                 messagebox.showerror('Error', 'Enter valid file extension')
@@ -64,6 +69,7 @@ def Playlist_downloader(url, audio_only=False, file_extension="mp4"):
 
         try:
             os.mkdir(f"{p.title}")
+
         except FileExistsError:
             pass
 
@@ -80,7 +86,8 @@ def Playlist_downloader(url, audio_only=False, file_extension="mp4"):
             else:
                 try:
 
-                    video.streams.filter(file_extension=file_extension, only_audio=False).first().download(
+                    video.streams.filter(file_extension=file_extension,
+                                         only_audio=False).get_highest_resolution().download(
                         output_path=f'{p.title}/', filename=vid_title + "." + file_extension)
 
                 except AttributeError:
@@ -148,14 +155,14 @@ def show_info(url):
         messagebox.showerror('Error', 'Enter valid url')
 
 
-def download(url, audio_only=False, file_extension="mp4"):
+def download(url, audio_only=False, file_extension="mp4", filename=None):
     if distinguisher(url) == "playlist":
 
         Playlist_process(url, audio_only, file_extension)
 
     else:
 
-        YouTube_process(url, audio_only, file_extension)
+        YouTube_process(url, audio_only, file_extension, filename)
 
 
 def main():
@@ -188,13 +195,19 @@ def main():
 
     URL.place(width=250, height=30, x=125, y=100)
 
+    filename = Entry(window)
+
+    filename.place(x=0, y=435, width=140, height=20)
+
     Button(window, text='Download!',
-           command=lambda: download(URL.get(), audio.get(), combo.get())).place(
+           command=lambda: download(URL.get(), audio.get(), combo.get(), filename.get())).place(
         width=100,
         height=30, x=150,
         y=140)
 
     Button(window, text="Show info", command=lambda: show_info(URL.get())).place(width=100, height=30, x=250, y=140)
+
+    Label(window, text="Enter filename:", font=1).place(x=0, y=405)
 
     window.mainloop()
 
