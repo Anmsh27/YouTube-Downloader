@@ -197,7 +197,7 @@ def main():
 
     filename = Entry(window)
 
-    filename.place(x=0, y=435, width=140, height=20)
+    filename.place(x=0, y=425, width=140, height=20)
 
     Button(window, text='Download!',
            command=lambda: download(URL.get(), audio.get(), combo.get(), filename.get())).place(
@@ -207,7 +207,7 @@ def main():
 
     Button(window, text="Show info", command=lambda: show_info(URL.get())).place(width=100, height=30, x=250, y=140)
 
-    Label(window, text="Enter filename:", font=1).place(x=0, y=405)
+    Label(window, text="Enter filename:", font=1).place(x=0, y=395)
 
     window.mainloop()
 
