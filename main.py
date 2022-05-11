@@ -172,8 +172,8 @@ def main():
     audio = BooleanVar()
     audio.set(False)
 
-    Label(window, text="----------------------------------------------------------------------------", font=25).place(
-        x=0, y=220)
+    Label(window, bg='black').place(
+        x=0, y=220, width=500, height=5)
 
     Label(window, text="Options:", font=25).place(
         x=210, y=240)
