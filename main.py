@@ -83,7 +83,7 @@ def main():
         search_page(search_frame)
 
 
-    Button(window, text="Explorer", command=lambda : switch2()).place(x=0,y=0, width=100, height=30)
+    Button(window, text="Search", command=lambda : switch2()).place(x=0,y=0, width=100, height=30)
 
     Button(window, text="Main", command=lambda : switch1()).place(x=400,y=0, width=100, height=30)
 
