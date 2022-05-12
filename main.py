@@ -13,19 +13,23 @@ from distinguisher import distinguisher
 
 from search_page import search_page
 
-def download(url, audio_only=False, file_extension="mp4", filename=None):
+def download(url, audio_only=False, file_extension="mp4", filename=None, video_only=False):
     if distinguisher(url) == "playlist":
 
         Playlist_process(url, audio_only, file_extension)
 
     else:
 
-        YouTube_process(url, audio_only, file_extension, filename)
+        YouTube_process(url, audio_only, file_extension, filename, video_only)
 
 
 def main_page(window):
+
     audio = BooleanVar()
     audio.set(False)
+
+    video = BooleanVar()
+    video.set(False)
 
     Label(window, bg='black').place(
         x=0, y=220, width=500, height=5)
@@ -36,6 +40,10 @@ def main_page(window):
     audio_box = Checkbutton(window, text="Only audio", font=1, var=audio)
 
     audio_box.place(x=0, y=280)
+
+    video_box = Checkbutton(window, text="Only Video", font=1, var=video)
+
+    video_box.place(x=175, y=280)
 
     Label(window, text="File extension:", font=1).place(x=0, y=325)
 
@@ -55,7 +63,7 @@ def main_page(window):
     filename.place(x=0, y=425, width=140, height=20)
 
     Button(window, text='Download!',
-           command=lambda: download(URL.get(), audio.get(), combo.get(), filename.get())).place(
+           command=lambda: download(URL.get(), audio.get(), combo.get(), filename.get(), video.get())).place(
         width=100,
         height=30, x=150,
         y=140)

@@ -11,7 +11,6 @@ def show_info(url, yt_obj=None):
 
         messagebox.showinfo("Video",
                             f"Title: {yt_obj.title}\nBy: {yt_obj.author}\nViews: {yt_obj.views}\nLength {minutes}:{secs}")
-        print(yt_obj.title)
         return
 
     try:

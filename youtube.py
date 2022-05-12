@@ -6,13 +6,16 @@ from tkinter import ttk,messagebox
 import multiprocessing
 import pytube.exceptions
 
-def YouTube_process(url, audio_only=False, file_extension="mp4", filename=None, yt_obj=None):
-    p = multiprocessing.Process(target=YouTube_downloader, args=(url, audio_only, file_extension, filename, yt_obj,))
+class AudioVideoException(Exception):
+    pass
+
+def YouTube_process(url, audio_only=False, file_extension="mp4", filename=None, video_only=False, yt_obj=None):
+    p = multiprocessing.Process(target=YouTube_downloader, args=(url, audio_only, file_extension, filename, video_only, yt_obj,))
 
     p.start()
 
 
-def YouTube_downloader(url, audio_only=False, file_extension="mp4", filename=None, yt_obj=None):
+def YouTube_downloader(url, audio_only=False, file_extension="mp4", filename=None, video_only=False, yt_obj=None):
 
     if yt_obj:
         yt_obj.streams.get_highest_resolution().download(output_path=os.getcwd())
@@ -20,6 +23,9 @@ def YouTube_downloader(url, audio_only=False, file_extension="mp4", filename=Non
         return
 
     try:
+
+        if video_only and audio_only:
+            raise AudioVideoException
 
         yt = YouTube(url)
 
@@ -44,8 +50,14 @@ def YouTube_downloader(url, audio_only=False, file_extension="mp4", filename=Non
 
             try:
 
-                yt.streams.filter(file_extension=file_extension, only_audio=False).get_highest_resolution().download(
-                    filename=f'{filename_final}.{file_extension}' if filename else f'{vid_title}.{file_extension}')
+                if video_only:
+                    yt.streams.filter(file_extension=file_extension,
+                                      only_audio=False).get_highest_resolution().download(
+                        filename=f'{filename_final}.{file_extension}' if filename else f'{vid_title}.{file_extension}')
+
+                else:
+                    yt.streams.filter(file_extension=file_extension, only_audio=False).get_highest_resolution().download(
+                        filename=f'{filename_final}.{file_extension}' if filename else f'{vid_title}.{file_extension}')
 
             except AttributeError:
                 messagebox.showerror('Error', 'Enter valid file extension')
@@ -59,4 +71,7 @@ def YouTube_downloader(url, audio_only=False, file_extension="mp4", filename=Non
 
     except pytube.exceptions.PytubeError as e:
         messagebox.showerror('Error', str(e))
+
+    except AudioVideoException:
+        messagebox.showerror('Error', 'Cannot have only audio and only video\nplease select only one or none')
 
