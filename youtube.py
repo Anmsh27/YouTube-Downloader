@@ -1,16 +1,24 @@
+import os
+
 from pytube import YouTube
 from tkinter import *
 from tkinter import ttk,messagebox
 import multiprocessing
 import pytube.exceptions
 
-def YouTube_process(url, audio_only=False, file_extension="mp4", filename=None):
-    p = multiprocessing.Process(target=YouTube_downloader, args=(url, audio_only, file_extension, filename,))
+def YouTube_process(url, audio_only=False, file_extension="mp4", filename=None, yt_obj=None):
+    p = multiprocessing.Process(target=YouTube_downloader, args=(url, audio_only, file_extension, filename, yt_obj,))
 
     p.start()
 
 
-def YouTube_downloader(url, audio_only=False, file_extension="mp4", filename=None):
+def YouTube_downloader(url, audio_only=False, file_extension="mp4", filename=None, yt_obj=None):
+
+    if yt_obj:
+        yt_obj.streams.get_highest_resolution().download(output_path=os.getcwd())
+        print("Done")
+        return
+
     try:
 
         yt = YouTube(url)
@@ -33,6 +41,7 @@ def YouTube_downloader(url, audio_only=False, file_extension="mp4", filename=Non
 
 
         else:
+
             try:
 
                 yt.streams.filter(file_extension=file_extension, only_audio=False).get_highest_resolution().download(

@@ -5,41 +5,13 @@ import os
 
 import pytube.exceptions
 from pytube import YouTube, Playlist
+from show_info import show_info
 
-from youtube import YouTube_downloader, YouTube_process
-from playlist import Playlist_process, Playlist_downloader, PrivatePlaylistError
-from others import distinguisher
+from youtube import YouTube_process
+from playlist import Playlist_process, PrivatePlaylistError
+from distinguisher import distinguisher
 
-
-def show_info(url):
-    try:
-        if distinguisher(url) == "video":
-            yt = YouTube(url)
-
-            secs = yt.length % 60
-            minutes = (yt.length - secs) / 60
-
-            messagebox.showinfo("Video",
-                                f"Title: {yt.title}\nBy: {yt.author}\nViews: {yt.views}\nLength {minutes}:{secs}")
-        else:
-
-            if distinguisher(url) == "private":
-                raise PrivatePlaylistError
-
-            p = Playlist(url)
-
-            messagebox.showinfo("Playlist",
-                                f"Title: {p.title}\nOwner: {p.owner}\nViews: {p.views}\nLength: {p.length}")
-
-    except pytube.exceptions.RegexMatchError:
-        messagebox.showerror('Error', 'Enter valid url')
-
-    except PrivatePlaylistError:
-        messagebox.showerror('Error', 'Playlist is private')
-
-    except KeyError:
-        messagebox.showerror('Error', 'Enter valid url')
-
+from search_page import search_page
 
 def download(url, audio_only=False, file_extension="mp4", filename=None):
     if distinguisher(url) == "playlist":
@@ -51,10 +23,7 @@ def download(url, audio_only=False, file_extension="mp4", filename=None):
         YouTube_process(url, audio_only, file_extension, filename)
 
 
-def main():
-    window = Tk()
-    window.geometry('500x500')
-
+def main_page(window):
     audio = BooleanVar()
     audio.set(False)
 
@@ -94,6 +63,29 @@ def main():
     Button(window, text="Show info", command=lambda: show_info(URL.get())).place(width=100, height=30, x=250, y=140)
 
     Label(window, text="Enter filename:", font=1).place(x=0, y=395)
+
+
+def main():
+    window = Tk()
+    window.geometry('500x500')
+
+    search_frame = Frame(window)
+    main_frame = Frame(window)
+
+    def switch1():
+        main_frame.place(x=0, y=0, width=500, height=500)
+        search_frame.place_forget()
+        main_page(main_frame)
+
+    def switch2():
+        search_frame.place(x=0, y=0, width=500, height=500)
+        main_frame.place_forget()
+        explorer_page(search_frame)
+
+
+    Button(window, text="Explorer", command=lambda : switch2()).place(x=0,y=0, width=100, height=30)
+
+    Button(window, text="Main", command=lambda : switch1()).place(x=400,y=0, width=100, height=30)
 
     window.mainloop()
 

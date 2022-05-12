@@ -2,7 +2,7 @@ from pytube import Playlist
 from  tkinter import messagebox
 import multiprocessing
 import pytube.exceptions
-from others import distinguisher
+from distinguisher import *
 import os
 
 class PrivatePlaylistError(Exception):
