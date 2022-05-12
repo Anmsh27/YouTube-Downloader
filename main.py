@@ -80,7 +80,7 @@ def main():
     def switch2():
         search_frame.place(x=0, y=0, width=500, height=500)
         main_frame.place_forget()
-        explorer_page(search_frame)
+        search_page(search_frame)
 
 
     Button(window, text="Explorer", command=lambda : switch2()).place(x=0,y=0, width=100, height=30)
