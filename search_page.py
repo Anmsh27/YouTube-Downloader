@@ -13,10 +13,11 @@ class SearchResult():
         return_obj = Frame(frame, width=500, height=50, highlightthickness=1, highlightbackground='black')
         return_obj.pack()
         Label(return_obj, text=self.obj.title).place(x=0, y=0)
+        Label(return_obj, text=f"By: {self.obj.author}").place(x=0,y=25)
         butt1 = Button(return_obj, text="Download", command=lambda: YouTube_process(None, yt_obj=self.obj))
-        butt1.place(x=400, y=0, height=25)
+        butt1.place(x=400, y=0, height=25, width=100)
         butt2 = Button(return_obj, text="Show info", command=lambda: show_info(None, yt_obj=self.obj))
-        butt2.place(x=400, y=25, height=24)
+        butt2.place(x=400, y=25, height=24, width=100)
 
 
 def search(searchword, frame):
