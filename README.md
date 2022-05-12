@@ -7,6 +7,10 @@ stop working or crash while downloading. Multiple videos can be downloaded
 at one time because of this. Downloading videos does take a lot of time
 so it might take some time for them to download.
 
+![](search_page.png)
+
+![](main_page.png)
+
 ## Requirements
 
 The program uses Python 3.10 with the only external package being pytube.

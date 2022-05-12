@@ -68,6 +68,8 @@ def main_page(window):
 def main():
     window = Tk()
     window.geometry('500x500')
+    window.resizable(False, False)
+    window.title('Youtube Downloader')
 
     search_frame = Frame(window)
     main_frame = Frame(window)
