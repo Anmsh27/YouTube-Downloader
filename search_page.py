@@ -20,7 +20,11 @@ class SearchResult():
         butt2.place(x=400, y=25, height=24, width=100)
 
 
-def search(searchword, frame):
+def search(searchword, window):
+
+    frame = Frame(window)
+    frame.place(x=0, y=200, width=500, height=350)
+
     s = Search(searchword)
 
     res_list = []
@@ -31,17 +35,15 @@ def search(searchword, frame):
     for res in res_list:
         res.show(frame)
 
+    res_list.clear()
 
 def search_page(window):
     URL = Entry(window)
 
     URL.place(width=300, height=30, x=100, y=100)
 
-    frame = Frame(window)
-    frame.place(x=0, y=200, width=500, height=350)
-
     Label(window, text="Enter search", font=30).place(width=200, height=30, x=150, y=70)
 
     Label(window, bg='black').place(width=500, height=5, x=0, y=180)
 
-    Button(window, text="Search", command=lambda: search(URL.get(), frame)).place(width=100, height=30, x=200, y=130)
+    Button(window, text="Search", command=lambda: search(URL.get(), window)).place(width=100, height=30, x=200, y=130)
