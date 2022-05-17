@@ -20,10 +20,14 @@ def YouTube_process(url, audio_only=False, file_extension="mp4", filename=None, 
 
 def YouTube_downloader(url, audio_only=False, file_extension="mp4", filename=None, video_only=False, yt_obj=None):
     if yt_obj:
+
         messagebox.showinfo('Video Downloader', f'Now downloading: {yt_obj.title}')
-        yt_obj.streams.get_highest_resolution().download(output_path=os.getcwd())
-        print("Done")
-        return
+
+        yt_obj.streams.get_highest_resolution().download(filename=f'{yt}.mp4',output_path=os.getcwd())
+
+        messagebox.showinfo('Video Downloader', 'Done!')
+
+        return print("Done!")
 
     try:
 
@@ -32,18 +36,9 @@ def YouTube_downloader(url, audio_only=False, file_extension="mp4", filename=Non
 
         yt = YouTube(url)
 
-        vid_title = ""
-        for word in yt.title.split(" "):
-            vid_title = vid_title + word
-
-        filename_final = ""
-        if filename:
-            for word in filename.split(" "):
-                filename_final = filename_final + word
-
         if audio_only:
             messagebox.showinfo('Video Downloader', f'Now downloading: {yt.title}')
-            yt.streams.get_audio_only().download(filename=f'{filename_final}.mp3' if filename else 'youtube_video.mp3')
+            yt.streams.get_audio_only().download(filename=f'{filename}.mp3' if filename else 'youtube_video.mp3')
 
             print("Done")
 
@@ -58,13 +53,13 @@ def YouTube_downloader(url, audio_only=False, file_extension="mp4", filename=Non
                     messagebox.showinfo('Video Downloader', f'Now downloading: {yt.title}')
                     yt.streams.filter(file_extension=file_extension,
                                       only_audio=False).get_highest_resolution().download(
-                        filename=f'{filename_final}.{file_extension}' if filename else f'{vid_title}.{file_extension}')
+                        filename=f'{filename}.{file_extension}' if filename else f'{yt.title}.{file_extension}')
 
                 else:
                     messagebox.showinfo('Video Downloader', f'Now downloading: {yt.title}')
                     yt.streams.filter(file_extension=file_extension,
                                       only_audio=False).get_highest_resolution().download(
-                        filename=f'{filename_final}.{file_extension}' if filename else f'{vid_title}.{file_extension}')
+                        filename=f'{filename}.{file_extension}' if filename else f'{yt.title}.{file_extension}')
 
             except AttributeError:
                 messagebox.showerror('Error', 'Enter valid file extension')
