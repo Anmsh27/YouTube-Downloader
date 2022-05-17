@@ -13,16 +13,22 @@ from distinguisher import distinguisher
 
 from search_page import search_page
 
+from tkinter import filedialog
 
-def download(url, audio_only=False, file_extension="mp4", filename=None, video_only=False):
+
+def download(url, audio_only=False, file_extension="mp4", filename=None, video_only=False, filepath=None):
     if distinguisher(url) == "playlist":
 
-        Playlist_process(url, audio_only, file_extension)
+        Playlist_process(url, audio_only, file_extension, filepath)
 
     else:
 
-        YouTube_process(url, audio_only, file_extension, filename, video_only)
+        YouTube_process(url, audio_only, file_extension, filename, video_only, filepath)
 
+def get_dir(path):
+    folder = filedialog.askdirectory()
+    path.set(folder)
+    return path
 
 def main_page(window):
     audio = BooleanVar()
@@ -30,6 +36,8 @@ def main_page(window):
 
     video = BooleanVar()
     video.set(False)
+
+    path = StringVar()
 
     Label(window, bg='black').place(
         x=0, y=220, width=500, height=5)
@@ -62,8 +70,10 @@ def main_page(window):
 
     filename.place(x=0, y=425, width=140, height=20)
 
+    Button(window, text="Select file path", command=lambda : get_dir(path)).place(width=125,height=30,x=175,y=350)
+
     Button(window, text='Download!',
-           command=lambda: download(URL.get(), audio.get(), combo.get(), filename.get(), video.get())).place(
+           command=lambda: download(URL.get(), audio.get(), combo.get(), filename.get(), video.get(), path.get())).place(
         width=100,
         height=30, x=150,
         y=140)
