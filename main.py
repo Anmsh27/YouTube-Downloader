@@ -13,6 +13,7 @@ from distinguisher import distinguisher
 
 from search_page import search_page
 
+
 def download(url, audio_only=False, file_extension="mp4", filename=None, video_only=False):
     if distinguisher(url) == "playlist":
 
@@ -24,7 +25,6 @@ def download(url, audio_only=False, file_extension="mp4", filename=None, video_o
 
 
 def main_page(window):
-
     audio = BooleanVar()
     audio.set(False)
 
@@ -78,6 +78,7 @@ def main():
     window.geometry('500x500')
     window.resizable(False, False)
     window.title('Youtube Downloader')
+    window.iconbitmap('youtube.ico')
 
     search_frame = Frame(window)
     main_frame = Frame(window)
@@ -92,10 +93,9 @@ def main():
         main_frame.place_forget()
         search_page(search_frame)
 
+    Button(window, text="Search", command=lambda: switch2()).place(x=0, y=0, width=100, height=30)
 
-    Button(window, text="Search", command=lambda : switch2()).place(x=0,y=0, width=100, height=30)
-
-    Button(window, text="Main", command=lambda : switch1()).place(x=400,y=0, width=100, height=30)
+    Button(window, text="Main", command=lambda: switch1()).place(x=400, y=0, width=100, height=30)
 
     window.mainloop()
 
