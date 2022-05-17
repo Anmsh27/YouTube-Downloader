@@ -23,7 +23,7 @@ def YouTube_downloader(url, audio_only=False, file_extension="mp4", filename=Non
 
         messagebox.showinfo('Video Downloader', f'Now downloading: {yt_obj.title}')
 
-        yt_obj.streams.get_highest_resolution().download(filename=f'{yt}.mp4',output_path=os.getcwd())
+        yt_obj.streams.get_highest_resolution().download()
 
         messagebox.showinfo('Video Downloader', 'Done!')
 
