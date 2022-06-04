@@ -33,3 +33,9 @@ in same directory as main.py
 YouTube is always changing and so pytube keeps on getting updated.
 If you are getting errors, then update pytube.
 
+### Errors
+
+Most errors which happen are a result of pytube and youtube api conflicting
+so just search the ptyube error on google and do what the solution says.
+
+
