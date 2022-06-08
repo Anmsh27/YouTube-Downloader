@@ -25,9 +25,6 @@ If you are getting some error like this
 
 then refer to [this Github issue](https://github.com/pytube/pytube/issues/1293).
 
-To compile, compile youtube downloader.py file and keep it
-in same directory as main.py
-
 ### Important
 
 YouTube is always changing and so pytube keeps on getting updated.
